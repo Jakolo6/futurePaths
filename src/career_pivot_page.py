@@ -5,6 +5,26 @@ import time
 import re
 from sentence_transformers import SentenceTransformer
 
+# First, add CSS to ensure consistent spacing
+st.markdown("""
+<style>
+    /* Ensure consistent spacing between labels and input fields */
+    .stFileUploader > div > label {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Adjust spacing for text areas */
+    .stTextArea > div > div {
+        margin-top: 0.5rem !important;
+    }
+    
+    /* Remove extra padding from file uploader */
+    .stFileUploader > div {
+        padding-bottom: 0.5rem !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 @st.cache_resource
 def load_predictor():
     # Load precomputed job labels + FAISS index
@@ -107,7 +127,7 @@ def run():
 
     # Streamlined upload section with consistent sizing
     st.markdown("""
-    <div style="background-color:#0F172A; padding:16px; border-radius:10px; margin-bottom:20px; border-left:3px solid #3B82F6;">
+    <div style="background-color:#0F172A; padding:16px; border-radius:10px; margin-bottom:16px; border-left:3px solid #3B82F6;">
         <div style="display:flex; align-items:center; margin-bottom:8px;">
             <span style="font-size:18px; margin-right:10px;">📄</span>
             <h2 style="color:white; margin:0; font-size:18px; font-weight:600;">Upload your CV or enter your career path manually</h2>
@@ -116,7 +136,10 @@ def run():
     </div>
     """, unsafe_allow_html=True)
     
+    # Consistent spacing for file uploader
+    st.markdown('<div style="margin-bottom:16px;">', unsafe_allow_html=True)
     uploaded_file = st.file_uploader("Upload your CV (TXT format)", type=["txt"])
+    st.markdown('</div>', unsafe_allow_html=True)
     
     # Variable to store the career path (either from upload or manual entry)
     career_input = ""
@@ -146,7 +169,7 @@ def run():
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Consistent label for text input
+                # Consistent label for text input with fixed spacing
                 st.markdown("""
                 <p style="color:white; margin:16px 0 8px 0; font-size:15px; font-weight:500;">You can edit the extracted career path or enter manually:</p>
                 """, unsafe_allow_html=True)
@@ -168,7 +191,7 @@ def run():
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Consistent label for text input
+                # Consistent label for text input with fixed spacing
                 st.markdown("""
                 <p style="color:white; margin:16px 0 8px 0; font-size:15px; font-weight:500;">Enter your career path:</p>
                 """, unsafe_allow_html=True)
@@ -179,7 +202,7 @@ def run():
                     placeholder="Example: Marketing Intern → Marketing Specialist → Digital Marketing Manager"
                 )
     else:
-        # If no file is uploaded, show empty text area with consistent styling
+        # If no file is uploaded, show empty text area with consistent styling and spacing
         st.markdown("""
         <p style="color:white; margin:16px 0 8px 0; font-size:15px; font-weight:500;">Enter your career path:</p>
         """, unsafe_allow_html=True)
