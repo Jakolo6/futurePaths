@@ -26,7 +26,7 @@ def extract_job_title_and_description(raw_text):
 
 def extract_career_path_from_cv(cv_text):
     """
-    Extracts a career path from free-form CV text.
+    Extracts a career path from free-form CV text with improved cleaning.
     """
     # Split the CV into lines
     lines = cv_text.strip().split('\n')
@@ -35,6 +35,9 @@ def extract_career_path_from_cv(cv_text):
     job_keywords = ["analyst", "head", "manager", "director", "intern", "assistant", 
                    "coordinator", "specialist", "engineer", "developer", "designer",
                    "marketing", "financial", "finance", "sales", "executive", "consultant"]
+    
+    # Words to remove from extracted titles
+    filter_words = ["from", "in", "to", "at", "since", "until"]
     
     # Extract potential job titles and create a career path
     extracted_roles = []
@@ -58,22 +61,31 @@ def extract_career_path_from_cv(cv_text):
                         potential_title = " ".join(words[start:end])
                         
                         # Clean up the extracted title
-                        potential_title = re.sub(r'in \d{4}|until \d{4}|at .*?(?=\s\d{4}|\s[a-z]|$)', '', potential_title)
-                        potential_title = potential_title.strip()
+                        potential_title = re.sub(r'\d{4}', '', potential_title)  # Remove years
+                        
+                        # Remove filter words
+                        for filter_word in filter_words:
+                            potential_title = re.sub(r'\b' + filter_word + r'\b', '', potential_title)
+                        
+                        # Clean up extra spaces
+                        potential_title = re.sub(r'\s+', ' ', potential_title).strip()
                         
                         if potential_title and len(potential_title.split()) <= 5:  # Reasonable title length
-                            extracted_roles.append(potential_title)
+                            # Check if this is semantically similar to any existing role
+                            is_duplicate = False
+                            for existing_role in extracted_roles:
+                                # Simple duplicate check - if the main keywords match
+                                if keyword in existing_role and len(set(potential_title.split()) & set(existing_role.split())) >= 2:
+                                    is_duplicate = True
+                                    break
+                            
+                            if not is_duplicate:
+                                extracted_roles.append(potential_title)
                         break
     
-    # Remove duplicates while preserving order
-    unique_roles = []
-    for role in extracted_roles:
-        if role not in unique_roles:
-            unique_roles.append(role)
-    
     # Format as a career path
-    if unique_roles:
-        return " → ".join(unique_roles)
+    if extracted_roles:
+        return " → ".join(extracted_roles)
     else:
         return None
 
