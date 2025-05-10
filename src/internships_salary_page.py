@@ -303,9 +303,9 @@ def run():
         </div>
         """, unsafe_allow_html=True)
         
-        # Tools displayed as cards in a grid
+        # Tools displayed as cards in a grid - CHANGE 1: Increased gap and added margin-bottom
         st.markdown("""
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top:20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; margin-top:20px; margin-bottom: 20px;">
         """, unsafe_allow_html=True)
         
         tools = JOB_TOOLS.get(job_title, ["No specific tools data available"])
@@ -343,11 +343,12 @@ def run():
             elif "Asana" in tool:
                 icon = "📝"
             
+            # CHANGE 2: Increased padding and added margin
             tools_html += f"""
             <div style="background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
-                        border-radius:10px; padding:15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                        transition: transform 0.2s, box-shadow 0.2s; height:100%;">
-                <div style="font-size:28px; margin-bottom:10px; text-align:center;">{icon}</div>
+                        border-radius:10px; padding:20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        transition: transform 0.2s, box-shadow 0.2s; height:100%; margin: 5px;">
+                <div style="font-size:28px; margin-bottom:15px; text-align:center;">{icon}</div>
                 <p style="margin:0; color:white; text-align:center; font-weight:500;">{tool}</p>
             </div>
             """
