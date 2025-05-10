@@ -90,31 +90,29 @@ def extract_career_path_from_cv(cv_text):
         return None
 
 def run():
-    # Enhanced header with rocket icon
+    # Clean, consistent header with rocket icon
     st.markdown("""
-    <div style="background: linear-gradient(90deg, #1E3A8A 0%, #1E293B 100%); 
-                padding:20px; border-radius:12px; margin-bottom:25px; 
-                display:flex; align-items:center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-        <span style="font-size:32px; margin-right:15px;">🚀</span>
-        <div>
-            <h1 style="color:white; margin:0; font-weight:600;">Career Changer Pathfinder</h1>
-            <p style="color:#94A3B8; margin:5px 0 0 0;">Find your next career pivot with smarter AI suggestions! 🎯</p>
+    <div style="background-color:#1E3A8A; padding:16px; border-radius:10px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center;">
+            <span style="font-size:24px; margin-right:12px;">🚀</span>
+            <div>
+                <h1 style="color:white; margin:0; font-size:24px; font-weight:600;">Career Changer Pathfinder</h1>
+                <p style="color:#94A3B8; margin:4px 0 0 0; font-size:14px;">Find your next career pivot with smarter AI suggestions! 🎯</p>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     model, index, next_jobs = load_predictor()
 
-    # Enhanced CV upload section
+    # Streamlined upload section with consistent sizing
     st.markdown("""
-    <div style="background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
-                border-radius:12px; padding:25px; margin:20px 0;
-                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
-        <div style="display:flex; align-items:center; margin-bottom:15px;">
-            <span style="font-size:28px; margin-right:15px;">📄</span>
-            <h2 style="color:white; margin:0; font-weight:600;">Upload your CV or enter your career path manually</h2>
+    <div style="background-color:#0F172A; padding:16px; border-radius:10px; margin-bottom:20px; border-left:3px solid #3B82F6;">
+        <div style="display:flex; align-items:center; margin-bottom:8px;">
+            <span style="font-size:18px; margin-right:10px;">📄</span>
+            <h2 style="color:white; margin:0; font-size:18px; font-weight:600;">Upload your CV or enter your career path manually</h2>
         </div>
-        <p style="color:#94A3B8; margin-bottom:20px;">We'll analyze your career history to suggest your next move</p>
+        <p style="color:#94A3B8; margin:0; font-size:14px;">We'll analyze your career history to suggest your next move</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -136,23 +134,21 @@ def run():
             
             if extracted_path:
                 st.markdown(f"""
-                <div style="background-color:rgba(34, 197, 94, 0.1); padding:15px; border-radius:10px; 
-                            margin:15px 0; border-left:5px solid #22C55E;">
+                <div style="background-color:rgba(34, 197, 94, 0.1); padding:12px; border-radius:8px; 
+                            margin:16px 0; border-left:3px solid #22C55E;">
                     <div style="display:flex; align-items:center;">
-                        <span style="font-size:24px; margin-right:10px;">✅</span>
+                        <span style="font-size:18px; margin-right:10px;">✅</span>
                         <div>
-                            <p style="color:white; margin:0; font-weight:500;">Career path extracted:</p>
-                            <p style="color:#22C55E; margin:5px 0 0 0; font-weight:600;">{extracted_path}</p>
+                            <p style="color:white; margin:0; font-size:14px;">Career path extracted:</p>
+                            <p style="color:#22C55E; margin:4px 0 0 0; font-size:15px; font-weight:500;">{extracted_path}</p>
                         </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Enhanced text input area
+                # Consistent label for text input
                 st.markdown("""
-                <div style="background-color:rgba(59, 130, 246, 0.05); padding:15px; border-radius:10px; margin:15px 0;">
-                    <p style="color:white; margin:0 0 10px 0; font-weight:500;">You can edit the extracted career path or enter manually:</p>
-                </div>
+                <p style="color:white; margin:16px 0 8px 0; font-size:15px; font-weight:500;">You can edit the extracted career path or enter manually:</p>
                 """, unsafe_allow_html=True)
                 
                 career_input = st.text_area(
@@ -163,13 +159,18 @@ def run():
                 )
             else:
                 st.markdown("""
-                <div style="background-color:rgba(251, 113, 133, 0.1); padding:15px; border-radius:10px; 
-                            margin:15px 0; border-left:5px solid #FB7185;">
+                <div style="background-color:rgba(251, 113, 133, 0.1); padding:12px; border-radius:8px; 
+                            margin:16px 0; border-left:3px solid #FB7185;">
                     <div style="display:flex; align-items:center;">
-                        <span style="font-size:24px; margin-right:10px;">⚠️</span>
-                        <p style="color:white; margin:0; font-weight:500;">Could not extract a clear career path. Please enter manually below.</p>
+                        <span style="font-size:18px; margin-right:10px;">⚠️</span>
+                        <p style="color:white; margin:0; font-size:14px;">Could not extract a clear career path. Please enter manually below.</p>
                     </div>
                 </div>
+                """, unsafe_allow_html=True)
+                
+                # Consistent label for text input
+                st.markdown("""
+                <p style="color:white; margin:16px 0 8px 0; font-size:15px; font-weight:500;">Enter your career path:</p>
                 """, unsafe_allow_html=True)
                 
                 career_input = st.text_area(
@@ -178,11 +179,9 @@ def run():
                     placeholder="Example: Marketing Intern → Marketing Specialist → Digital Marketing Manager"
                 )
     else:
-        # If no file is uploaded, show empty text area with enhanced styling
+        # If no file is uploaded, show empty text area with consistent styling
         st.markdown("""
-        <div style="background-color:rgba(59, 130, 246, 0.05); padding:15px; border-radius:10px; margin:15px 0;">
-            <p style="color:white; margin:0 0 10px 0; font-weight:500;">Enter your career path:</p>
-        </div>
+        <p style="color:white; margin:16px 0 8px 0; font-size:15px; font-weight:500;">Enter your career path:</p>
         """, unsafe_allow_html=True)
         
         career_input = st.text_area(
@@ -191,7 +190,7 @@ def run():
             placeholder="Example: Marketing Intern → Marketing Specialist → Digital Marketing Manager"
         )
 
-    # Enhanced suggest button with centered layout
+    # Centered button with consistent styling
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
         suggest_clicked = st.button("🔎 Suggest Next Steps", type="primary", use_container_width=True)
@@ -199,11 +198,11 @@ def run():
     if suggest_clicked:
         if career_input.strip() == "":
             st.markdown("""
-            <div style="background-color:rgba(251, 113, 133, 0.1); padding:15px; border-radius:10px; 
-                        margin:15px 0; border-left:5px solid #FB7185;">
+            <div style="background-color:rgba(251, 113, 133, 0.1); padding:12px; border-radius:8px; 
+                        margin:16px 0; border-left:3px solid #FB7185;">
                 <div style="display:flex; align-items:center;">
-                    <span style="font-size:24px; margin-right:10px;">⚠️</span>
-                    <p style="color:white; margin:0; font-weight:500;">Please enter your career path above.</p>
+                    <span style="font-size:18px; margin-right:10px;">⚠️</span>
+                    <p style="color:white; margin:0; font-size:14px;">Please enter your career path above.</p>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -217,17 +216,17 @@ def run():
                 # Search using FAISS index
                 distances, indices = index.search(input_embedding, 3)
 
-                # Enhanced success message for recommendations
+                # Consistent success message for recommendations
                 st.markdown("""
-                <div style="background: linear-gradient(90deg, #22C55E 0%, #16A34A 100%); 
-                            padding:15px; border-radius:10px; margin:25px 0 15px 0; 
-                            display:flex; align-items:center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <span style="font-size:24px; margin-right:10px;">✅</span>
-                    <h3 style="color:white; margin:0; font-weight:600;">Here are your Top 3 Career Pivot Suggestions:</h3>
+                <div style="background-color:#22C55E; padding:12px; border-radius:8px; margin:20px 0 16px 0;">
+                    <div style="display:flex; align-items:center;">
+                        <span style="font-size:18px; margin-right:10px;">✅</span>
+                        <h3 style="color:white; margin:0; font-size:16px; font-weight:600;">Here are your Top 3 Career Pivot Suggestions:</h3>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
 
-                # Enhanced job recommendations
+                # Consistent job recommendations
                 for i, idx in enumerate(indices[0]):
                     confidence = distances[0][i]
                     raw_text = next_jobs[idx]
@@ -235,30 +234,28 @@ def run():
 
                     with st.expander(f"🔎 {job_title} (Similarity: {confidence:.2f})"):
                         st.markdown(f"""
-                        <div style="background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
-                                    border-radius:12px; padding:20px; margin:10px 0;
-                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                            <div style="margin-bottom:20px;">
-                                <h4 style="color:#94A3B8; margin:0 0 10px 0; font-weight:500; display:flex; align-items:center;">
-                                    <span style="font-size:20px; margin-right:10px;">📝</span>What You'll Do:
+                        <div style="background-color:#1E293B; padding:16px; border-radius:8px; margin:8px 0;">
+                            <div style="margin-bottom:16px;">
+                                <h4 style="color:#94A3B8; margin:0 0 8px 0; font-weight:500; display:flex; align-items:center;">
+                                    <span style="font-size:16px; margin-right:8px;">📝</span>What You'll Do:
                                 </h4>
-                                <p style="color:white; margin:0; line-height:1.6;">{job_desc[:300]}...</p>
+                                <p style="color:white; margin:0; line-height:1.5; font-size:14px;">{job_desc[:300]}...</p>
                             </div>
-                            <div style="margin-bottom:20px;">
-                                <h4 style="color:#94A3B8; margin:0 0 10px 0; font-weight:500; display:flex; align-items:center;">
-                                    <span style="font-size:20px; margin-right:10px;">💼</span>Why It's Interesting:
+                            <div style="margin-bottom:16px;">
+                                <h4 style="color:#94A3B8; margin:0 0 8px 0; font-weight:500; display:flex; align-items:center;">
+                                    <span style="font-size:16px; margin-right:8px;">💼</span>Why It's Interesting:
                                 </h4>
-                                <p style="color:white; margin:0; line-height:1.6;">This role is ideal if you want to gain experience in the field and build towards mid- and senior-level positions.</p>
+                                <p style="color:white; margin:0; line-height:1.5; font-size:14px;">This role is ideal if you want to gain experience in the field and build towards mid- and senior-level positions.</p>
                             </div>
                             <div>
-                                <h4 style="color:#94A3B8; margin:0 0 10px 0; font-weight:500; display:flex; align-items:center;">
-                                    <span style="font-size:20px; margin-right:10px;">🔗</span>Learn More:
+                                <h4 style="color:#94A3B8; margin:0 0 8px 0; font-weight:500; display:flex; align-items:center;">
+                                    <span style="font-size:16px; margin-right:8px;">🔗</span>Learn More:
                                 </h4>
                                 <a href="https://www.google.com/search?q={job_title.replace(' ', '+')}+Internships" 
                                    target="_blank" style="text-decoration:none;">
-                                    <div style="background-color:#2563EB; color:white; padding:8px 15px; 
-                                                border-radius:8px; display:inline-block; font-weight:500;
-                                                box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);">
+                                    <div style="background-color:#2563EB; color:white; padding:6px 12px; 
+                                                border-radius:6px; display:inline-block; font-weight:500;
+                                                font-size:14px;">
                                         Search {job_title} Internships
                                     </div>
                                 </a>
@@ -266,9 +263,9 @@ def run():
                         </div>
                         """, unsafe_allow_html=True)
 
-    # Footer
+    # Subtle footer
     st.markdown("""
-    <div style="background-color:rgba(15, 23, 42, 0.3); padding:8px; border-radius:6px; margin-top:40px; text-align:center; width:100%;">
+    <div style="background-color:rgba(15, 23, 42, 0.3); padding:8px; border-radius:6px; margin-top:30px; text-align:center;">
         <p style="color:#64748B; font-size:11px; margin:0;">© 2025 FuturePaths | Career Guidance Platform</p>
     </div>
     """, unsafe_allow_html=True)
