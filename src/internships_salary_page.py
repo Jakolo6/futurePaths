@@ -204,7 +204,7 @@ def create_salary_growth_chart(job_title, location):
         'Salary (€)': salaries
     })
     
-        chart = alt.Chart(df).mark_line(point=True).encode(
+    chart = alt.Chart(df).mark_line(point=True).encode(
         x=alt.X('Year:O', title='Year'),
         y=alt.Y('Salary (€):Q', title='Estimated Salary (€)'),
         tooltip=['Year', 'Salary (€)']
@@ -215,7 +215,6 @@ def create_salary_growth_chart(job_title, location):
     )
     
     return chart
-
 
 def run():
     st.title("💼 Internship & Salary Insights")
@@ -277,12 +276,12 @@ def run():
         chart = create_salary_growth_chart(job_title, location)
         st.altair_chart(chart, use_container_width=True)
         
-      # Improved tools section
-st.markdown(f"""
-<div class="card">
-    <h3 class="card-header">🧰 Required Tools & Software for {job_title}:</h3>
-    <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 15px;">
-
+        # Improved tools section
+        st.markdown(f"""
+        <div class="card">
+            <h3 class="card-header">🧰 Required Tools & Software for {job_title}:</h3>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 15px;">
+        """, unsafe_allow_html=True)
         
         # Generate tool items HTML
         tools_html = ""
@@ -316,11 +315,11 @@ st.markdown(f"""
         
         st.markdown(f"{tools_html}</div></div>", unsafe_allow_html=True)
         
-       # Enhanced job links section
-st.markdown(f"""
-<div class="card">
-    <h3 class="card-header">🔗 Find {job_title} Opportunities:</h3>
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-top: 15px;">
+        # Enhanced job links section
+        st.markdown(f"""
+        <div class="card">
+            <h3 class="card-header">🔗 Find {job_title} Opportunities:</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-top: 15px;">
         """, unsafe_allow_html=True)
         
         google_link, linkedin_link, indeed_link = internship_search_links(job_title)
