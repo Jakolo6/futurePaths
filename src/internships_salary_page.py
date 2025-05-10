@@ -89,13 +89,12 @@ st.markdown("""
   border-left: 5px solid #22C55E;
 }
 .footer {
-  background-color: #0F172A;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 30px;
-  text-align: center;
-  font-size: 12px;
-  color: #94A3B8;
+  background-color:rgba(15, 23, 42, 0.3);
+  padding:8px;
+  border-radius:6px;
+  margin-top:40px;
+  text-align:center;
+  width:100%;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -190,7 +189,7 @@ def get_adjusted_salary(base_salary, location):
     adjusted_salary = base_salary * adjustment_factor
     return f"€{int(adjusted_salary - 5000)} - €{int(adjusted_salary + 5000)} / year"
 
-# 📊 Create salary growth chart with enhanced styling
+# 📊 Create salary growth chart
 def create_salary_growth_chart(job_title, location):
     # Mock data for 5-year salary progression
     base = SALARY_BASE_ESTIMATES.get(job_title, 45000)
@@ -243,113 +242,180 @@ def run():
         )
 
     with col2:
-        # Enhanced growth trend display with better styling
+        # Visual growth meter
         growth_score = JOB_GROWTH.get(job_title, 3)
         growth_color = "#22C55E" if growth_score >= 4 else ("#64748B" if growth_score >= 3 else "#EF4444")
+        growth_percentage = (growth_score / 5) * 100
+        
         st.markdown(f"""
-        <div class="growth-indicator">
-            <h4 style="color:white; margin:0 0 10px 0;">Market Growth Trend</h4>
-            <h2 style="color:{growth_color}; font-size:32px; margin:0 0 10px 0;">{growth_score}/5</h2>
-            <p style="color:{growth_color}; margin:0; font-weight:500;">
+        <div style="background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
+                    padding:20px; border-radius:12px; height:100%;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <h4 style="color:white; margin:0 0 15px 0; text-align:center; font-weight:600;">Market Growth Trend</h4>
+            <div style="font-size:38px; text-align:center; margin-bottom:10px; color:{growth_color};">{growth_score}/5</div>
+            <div style="background-color:#1E293B; height:10px; border-radius:5px; margin:15px 0;">
+                <div style="background-color:{growth_color}; width:{growth_percentage}%; height:10px; border-radius:5px;"></div>
+            </div>
+            <p style="color:{growth_color}; margin:10px 0 0 0; text-align:center; font-weight:500;">
                 {"Growing" if growth_score >= 4 else ("Stable" if growth_score >= 3 else "Slow")}
             </p>
         </div>
         """, unsafe_allow_html=True)
 
     if job_title and location:
-        # Enhanced salary information card
+        # Enhanced salary card with more visual impact
         base_salary = SALARY_BASE_ESTIMATES.get(job_title, 45000)
         adjusted_salary = get_adjusted_salary(base_salary, location)
         st.markdown(f"""
-        <div class="card salary-card">
-            <h3 class="card-header">💰 Salary Estimate for {job_title} in {location}:</h3>
-            <h2 style="color:#3B82F6; text-align:center; font-size:28px; margin:0;">{adjusted_salary}</h2>
+        <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+                    border-radius:12px; padding:25px; margin:20px 0;
+                    border-left:5px solid #3B82F6; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
+            <div style="display:flex; align-items:center; margin-bottom:15px;">
+                <span style="font-size:32px; margin-right:15px;">💰</span>
+                <h3 style="color:white; margin:0; font-weight:600;">Salary Estimate for {job_title} in {location}:</h3>
+            </div>
+            <div style="background-color:rgba(59, 130, 246, 0.1); padding:15px; border-radius:8px; text-align:center;">
+                <h2 style="color:#3B82F6; font-size:32px; margin:0; font-weight:700;">{adjusted_salary}</h2>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
-        # Enhanced salary growth projection
+        # Enhanced section header with gradient and icon
         st.markdown(f"""
-        <div class="card">
-            <h3 class="card-header">📈 Salary Growth Projection (5 Years)</h3>
+        <div style="background: linear-gradient(90deg, #1E3A8A 0%, #1E293B 100%); 
+                    padding:15px; border-radius:10px; margin:25px 0 15px 0; 
+                    display:flex; align-items:center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <span style="font-size:24px; margin-right:10px;">📈</span>
+            <h3 style="color:white; margin:0; font-weight:600;">Salary Growth Projection (5 Years)</h3>
         </div>
         """, unsafe_allow_html=True)
+        
         chart = create_salary_growth_chart(job_title, location)
         st.altair_chart(chart, use_container_width=True)
         
-        # Improved tools section
+        # Enhanced section header for tools
         st.markdown(f"""
-        <div class="card">
-            <h3 class="card-header">🧰 Required Tools & Software for {job_title}:</h3>
-            <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 15px;">
+        <div style="background: linear-gradient(90deg, #1E3A8A 0%, #1E293B 100%); 
+                    padding:15px; border-radius:10px; margin:25px 0 15px 0; 
+                    display:flex; align-items:center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <span style="font-size:24px; margin-right:10px;">🧰</span>
+            <h3 style="color:white; margin:0; font-weight:600;">Required Tools & Software for {job_title}:</h3>
+        </div>
         """, unsafe_allow_html=True)
         
-        # Generate tool items HTML
-        tools_html = ""
+        # Tools displayed as cards in a grid
+        st.markdown("""
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top:20px;">
+        """, unsafe_allow_html=True)
+        
         tools = JOB_TOOLS.get(job_title, ["No specific tools data available"])
+        tools_html = ""
+        
         for tool in tools:
-            # Map tool names to appropriate icons
+            # Map tool names to appropriate icons with more variety
             icon = "⚙️"
             if "Python" in tool:
                 icon = "🐍"
             elif "SQL" in tool:
                 icon = "🗃️"
-            elif "Excel" in tool or "Tableau" in tool:
+            elif "Excel" in tool:
                 icon = "📊"
+            elif "Tableau" in tool or "Power BI" in tool:
+                icon = "📈"
             elif "Git" in tool:
                 icon = "🔄"
-            elif "Docker" in tool or "Kubernetes" in tool:
+            elif "Docker" in tool:
                 icon = "🐳"
-            elif "JavaScript" in tool or "React" in tool:
+            elif "Kubernetes" in tool:
+                icon = "☸️"
+            elif "JavaScript" in tool:
                 icon = "🌐"
-            elif "Adobe" in tool or "Figma" in tool or "Sketch" in tool:
+            elif "React" in tool:
+                icon = "⚛️"
+            elif "Adobe" in tool:
                 icon = "🎨"
-            elif "Jira" in tool or "Asana" in tool:
+            elif "Figma" in tool:
+                icon = "🖌️"
+            elif "Sketch" in tool:
+                icon = "✏️"
+            elif "Jira" in tool:
                 icon = "📋"
+            elif "Asana" in tool:
+                icon = "📝"
             
             tools_html += f"""
-            <div class="tool-item">
-                <span style="margin-right:10px;">{icon}</span>
-                <span>{tool}</span>
+            <div style="background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
+                        border-radius:10px; padding:15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        transition: transform 0.2s, box-shadow 0.2s; height:100%;">
+                <div style="font-size:28px; margin-bottom:10px; text-align:center;">{icon}</div>
+                <p style="margin:0; color:white; text-align:center; font-weight:500;">{tool}</p>
             </div>
             """
         
-        st.markdown(f"{tools_html}</div></div>", unsafe_allow_html=True)
+        st.markdown(f"{tools_html}</div>", unsafe_allow_html=True)
         
-        # Enhanced job links section
+        # Enhanced section header for job opportunities
         st.markdown(f"""
-        <div class="card">
-            <h3 class="card-header">🔗 Find {job_title} Opportunities:</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-top: 15px;">
-        """, unsafe_allow_html=True)
-        
-        google_link, linkedin_link, indeed_link = internship_search_links(job_title)
-        
-        links_html = f"""
-        <a href="{google_link}" target="_blank" class="job-link">
-            🌐 Google Search
-        </a>
-        
-        <a href="{linkedin_link}" target="_blank" class="job-link">
-            💼 LinkedIn Jobs
-        </a>
-        
-        <a href="{indeed_link}" target="_blank" class="job-link">
-            🔍 Indeed
-        </a>
-        """
-        
-        st.markdown(f"{links_html}</div></div>", unsafe_allow_html=True)
-
-        # Enhanced pro tip with better styling
-        st.markdown(f"""
-        <div class="pro-tip">
-            <p style="margin:0; color:white;">💡 <strong>Pro Tip:</strong> Consider setting job alerts on LinkedIn to stay updated for new {job_title} opportunities in {location}!</p>
+        <div style="background: linear-gradient(90deg, #1E3A8A 0%, #1E293B 100%); 
+                    padding:15px; border-radius:10px; margin:25px 0 15px 0; 
+                    display:flex; align-items:center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <span style="font-size:24px; margin-right:10px;">🔗</span>
+            <h3 style="color:white; margin:0; font-weight:600;">Find {job_title} Opportunities:</h3>
         </div>
         """, unsafe_allow_html=True)
         
-        # Footer
+        # Modern Apple-style buttons for job search
+        google_link, linkedin_link, indeed_link = internship_search_links(job_title)
+        
+        st.markdown(f"""
+        <div style="margin-top:20px;">
+            <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
+                <a href="{google_link}" target="_blank" style="text-decoration:none; flex:1;">
+                    <div style="background-color:#2563EB; color:white; padding:12px 20px; 
+                                border-radius:12px; text-align:center; min-width:120px;
+                                box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+                                transition: all 0.3s ease;">
+                        <div style="font-size:24px; margin-bottom:8px;">🌐</div>
+                        <p style="margin:0; font-weight:500;">Google Search</p>
+                    </div>
+                </a>
+                <a href="{linkedin_link}" target="_blank" style="text-decoration:none; flex:1;">
+                    <div style="background-color:#0077B5; color:white; padding:12px 20px; 
+                                border-radius:12px; text-align:center; min-width:120px;
+                                box-shadow: 0 4px 6px rgba(0, 119, 181, 0.2);
+                                transition: all 0.3s ease;">
+                        <div style="font-size:24px; margin-bottom:8px;">💼</div>
+                        <p style="margin:0; font-weight:500;">LinkedIn Jobs</p>
+                    </div>
+                </a>
+                <a href="{indeed_link}" target="_blank" style="text-decoration:none; flex:1;">
+                    <div style="background-color:#2557A7; color:white; padding:12px 20px; 
+                                border-radius:12px; text-align:center; min-width:120px;
+                                box-shadow: 0 4px 6px rgba(37, 87, 167, 0.2);
+                                transition: all 0.3s ease;">
+                        <div style="font-size:24px; margin-bottom:8px;">🔍</div>
+                        <p style="margin:0; font-weight:500;">Indeed</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Enhanced pro tip with better visual design
+        st.markdown(f"""
+        <div style="background: linear-gradient(90deg, rgba(34, 197, 94, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%);
+                    padding:15px; border-radius:10px; margin-top:30px; 
+                    border-left:5px solid #22C55E; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+            <div style="display:flex; align-items:center;">
+                <span style="font-size:24px; margin-right:10px;">💡</span>
+                <p style="margin:0; color:white;"><strong>Pro Tip:</strong> Consider setting job alerts on LinkedIn to stay updated for new {job_title} opportunities in {location}!</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # More subtle footer
         st.markdown("""
-        <div class="footer">
-            © 2025 FuturePaths | Career Guidance Platform
+        <div style="background-color:rgba(15, 23, 42, 0.3); padding:8px; border-radius:6px; margin-top:40px; text-align:center; width:100%;">
+            <p style="color:#64748B; font-size:11px; margin:0;">© 2025 FuturePaths | Career Guidance Platform</p>
         </div>
         """, unsafe_allow_html=True)
