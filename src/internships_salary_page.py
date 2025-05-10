@@ -8,8 +8,8 @@ st.markdown("""
 .card {
   background-color: #1E293B;
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 25px;
+  margin-bottom: 35px;
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -21,11 +21,11 @@ st.markdown("""
 .card-header {
   font-size: 1.2rem;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   letter-spacing: 0.5px;
   color: white;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 .salary-card {
   background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
@@ -34,10 +34,10 @@ st.markdown("""
 .tool-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 15px;
   border-radius: 8px;
   background-color: rgba(59, 130, 246, 0.1);
-  margin-bottom: 8px;
+  margin-bottom: 15px;
 }
 .tool-item img {
   width: 20px;
@@ -204,31 +204,18 @@ def create_salary_growth_chart(job_title, location):
         'Salary (€)': salaries
     })
     
-    # Enhanced chart with gridlines and better styling
-    chart = alt.Chart(df).mark_line(point=True).encode(
+        chart = alt.Chart(df).mark_line(point=True).encode(
         x=alt.X('Year:O', title='Year'),
-        y=alt.Y('Salary (€):Q', 
-                title='Estimated Salary (€)',
-                scale=alt.Scale(zero=False),
-                axis=alt.Axis(grid=True, format='€,.0f')),
-        tooltip=['Year', alt.Tooltip('Salary (€)', format='€,.0f')]
+        y=alt.Y('Salary (€):Q', title='Estimated Salary (€)'),
+        tooltip=['Year', 'Salary (€)']
     ).properties(
         title=f'Projected Salary Growth for {job_title} in {location}',
         width=500,
         height=300
-    ).configure_view(
-        strokeWidth=0
-    ).configure_axis(
-        labelFontSize=12,
-        titleFontSize=14,
-        gridColor='#1E293B',
-        domainColor='#94A3B8'
-    ).configure_title(
-        fontSize=16,
-        color='#F8FAFC'
     )
     
     return chart
+
 
 def run():
     st.title("💼 Internship & Salary Insights")
@@ -290,12 +277,12 @@ def run():
         chart = create_salary_growth_chart(job_title, location)
         st.altair_chart(chart, use_container_width=True)
         
-        # Enhanced tools section with better styling
-        st.markdown(f"""
-        <div class="card">
-            <h3 class="card-header">🧰 Required Tools & Software for {job_title}:</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        """, unsafe_allow_html=True)
+      # Improved tools section
+st.markdown(f"""
+<div class="card">
+    <h3 class="card-header">🧰 Required Tools & Software for {job_title}:</h3>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 15px;">
+
         
         # Generate tool items HTML
         tools_html = ""
@@ -329,11 +316,11 @@ def run():
         
         st.markdown(f"{tools_html}</div></div>", unsafe_allow_html=True)
         
-        # Enhanced job links section
-        st.markdown(f"""
-        <div class="card">
-            <h3 class="card-header">🔗 Find {job_title} Opportunities:</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+       # Enhanced job links section
+st.markdown(f"""
+<div class="card">
+    <h3 class="card-header">🔗 Find {job_title} Opportunities:</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-top: 15px;">
         """, unsafe_allow_html=True)
         
         google_link, linkedin_link, indeed_link = internship_search_links(job_title)
