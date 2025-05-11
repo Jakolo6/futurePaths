@@ -167,22 +167,28 @@ def display_career_timeline():
                                     <span style="color:white; font-size:14px;">{step["salary"]}</span>
                                 </div>
                             </div>
-                            <div>
-                                <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Key Skills:</span>
-                                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+                            
+                            <!-- Added a clear heading for the skills section -->
+                            <div style="margin-bottom:10px;">
+                                <h4 style="color:#94A3B8; font-size:14px; margin:0 0 12px 0; display:flex; align-items:center;">
+                                    <span style="font-size:16px; margin-right:8px;">🔧</span>Key Skills Required:
+                                </h4>
+                            </div>
+                            
+                            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
                 """, unsafe_allow_html=True)
                 
-                # Display skills as badges
+                # Display skills as badges with improved spacing and styling
                 for skill in step["skills"]:
                     st.markdown(f"""
-                    <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
-                                border-radius:4px; border:1px solid rgba(59, 130, 246, 0.3);">
-                        <span style="color:white; font-size:12px;">{skill}</span>
+                    <div style="background-color:rgba(59, 130, 246, 0.1); padding:8px 12px; 
+                                border-radius:6px; border:1px solid rgba(59, 130, 246, 0.3);
+                                margin-bottom:8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <span style="color:white; font-size:13px; font-weight:500;">{skill}</span>
                     </div>
                     """, unsafe_allow_html=True)
                 
                 st.markdown("""
-                                </div>
                             </div>
                         </div>
                     </div>
