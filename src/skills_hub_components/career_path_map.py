@@ -21,6 +21,14 @@ JOB_TOOLS = {
     "Graphic Designer": ["Adobe Creative Suite", "Figma", "Sketch", "Canva"],
 }
 
+def classify_transition(num_skills_to_develop):
+    if num_skills_to_develop == 0:
+        return "Easy Transition", "#22C55E"  # Green
+    elif num_skills_to_develop == 1:
+        return "Moderate Transition", "#F59E0B"  # Orange
+    else:
+        return "Challenging Transition", "#EF4444"  # Red
+
 def display_career_path_map():
     st.markdown("""
     <div style="background: linear-gradient(90deg, #1E3A8A 0%, #1E293B 100%); 
@@ -146,20 +154,16 @@ def display_career_path_map():
                     # Get up to 3 transitions
                     display_transitions = transitions[:3]
                     
-                    # Calculate skill overlaps
-                    overlaps = []
+                    # Calculate skill overlaps and skills to develop
                     common_skills_list = []
+                    skills_to_develop_list = []
                     
                     for transition in display_transitions:
-                        # Calculate mock skill overlap percentage
-                        overlap = random.randint(60, 90)
-                        overlaps.append(overlap)
-                        
-                        # Get common skills
+                        # Get skills for both roles
                         current_skills = JOB_TOOLS.get(selected_role, [])
                         transition_skills = JOB_TOOLS.get(transition, [])
                         
-                        # Find common skills (simplified approach)
+                        # Find common skills
                         common_skills = []
                         for skill in current_skills:
                             skill_name = skill.split('/')[0] if '/' in skill else skill
@@ -181,6 +185,23 @@ def display_career_path_map():
                                 common_skills = ["Communication", "Project management", "Industry knowledge"]
                         
                         common_skills_list.append(common_skills[:3])  # Limit to 3 skills for display
+                        
+                        # Find skills to develop
+                        skills_to_develop = []
+                        for skill in transition_skills:
+                            is_common = False
+                            skill_name = skill.split('/')[0] if '/' in skill else skill
+                            
+                            for common in common_skills:
+                                common_name = common.split('/')[0] if '/' in common else common
+                                if skill_name == common_name or skill_name in common or common_name in skill:
+                                    is_common = True
+                                    break
+                            
+                            if not is_common:
+                                skills_to_develop.append(skill)
+                        
+                        skills_to_develop_list.append(skills_to_develop[:3])  # Limit to 3 skills for display
                     
                     # Display the current role in a centered box
                     st.markdown(f"""
@@ -197,31 +218,17 @@ def display_career_path_map():
                     cols = st.columns(len(display_transitions))
                     
                     # Display each transition in its own column
-                    for i, (col, transition, overlap, common_skills) in enumerate(zip(cols, display_transitions, overlaps, common_skills_list)):
-                        # Determine color based on overlap
-                        if overlap >= 80:
-                            color = "#22C55E"  # Green for high overlap
-                            difficulty = "Easy Transition"
-                        elif overlap >= 70:
-                            color = "#F59E0B"  # Amber for medium overlap
-                            difficulty = "Moderate Transition"
-                        else:
-                            color = "#3B82F6"  # Blue for lower overlap
-                            difficulty = "Challenging Transition"
+                    for i, (col, transition, common_skills, skills_to_develop) in enumerate(zip(cols, display_transitions, common_skills_list, skills_to_develop_list)):
+                        # Classify transition based on number of skills to develop
+                        transition_type, color = classify_transition(len(skills_to_develop))
                         
                         with col:
                             # Transition box
                             st.markdown(f"""
                             <div style="background-color:{color}; color:white; padding:12px 20px; 
                                         border-radius:8px; text-align:center; font-weight:500; 
-                                        box-shadow:0 4px 6px rgba(0,0,0,0.1); margin-bottom:15px;">
+                                        box-shadow:0 4px 6px rgba(0,0,0,0.1); margin-bottom:15px; position:relative;">
                                 {transition}
-                                <div style="background-color:#1E293B; color:white; border-radius:50%; 
-                                            width:40px; height:40px; display:flex; align-items:center; 
-                                            justify-content:center; font-size:12px; font-weight:bold; 
-                                            border:2px solid white; position:absolute; top:-10px; right:-10px;">
-                                    {overlap}%
-                                </div>
                             </div>
                             """, unsafe_allow_html=True)
                             
@@ -232,7 +239,7 @@ def display_career_path_map():
                                 <div style="display:flex; align-items:center; margin-bottom:5px;">
                                     <div style="width:12px; height:12px; background-color:{color}; 
                                                 border-radius:50%; margin-right:8px;"></div>
-                                    <span style="color:white; font-weight:500; font-size:14px;">{difficulty}</span>
+                                    <span style="color:white; font-weight:500; font-size:14px;">{transition_type}</span>
                                 </div>
                             </div>
                             """, unsafe_allow_html=True)
@@ -255,26 +262,7 @@ def display_career_path_map():
                             
                             st.markdown("</div>", unsafe_allow_html=True)
                             
-                            # Get skills to develop
-                            transition_skills = JOB_TOOLS.get(transition, [])
-                            skills_to_develop = []
-                            
-                            for skill in transition_skills:
-                                is_common = False
-                                skill_name = skill.split('/')[0] if '/' in skill else skill
-                                
-                                for common in common_skills:
-                                    common_name = common.split('/')[0] if '/' in common else common
-                                    if skill_name == common_name or skill_name in common or common_name in skill:
-                                        is_common = True
-                                        break
-                                
-                                if not is_common:
-                                    skills_to_develop.append(skill)
-                            
-                            # Limit to 3 skills
-                            skills_to_develop = skills_to_develop[:3]
-                            
+                            # Skills to develop
                             if skills_to_develop:
                                 st.markdown("""
                                 <div style="background-color:#1E293B; padding:12px; border-radius:8px; 
