@@ -128,7 +128,8 @@ def display_career_timeline():
                             year_start += int(prev_duration)
                         else:
                             # Handle cases like "3+ years"
-                            year_start += int(prev_duration.replace("+", ""))
+                            numeric_part = prev_duration.replace("+", "").split()[0]
+                            year_start += int(numeric_part)
                 
                 # Extract the first number from the duration string
                 duration = step["duration"].split("-")[0]
@@ -136,7 +137,8 @@ def display_career_timeline():
                     year_end = year_start + int(duration)
                 else:
                     # Handle cases like "3+ years"
-                    year_end = year_start + int(duration.replace("+", ""))
+                    numeric_part = duration.replace("+", "").split()[0]
+                    year_end = year_start + int(numeric_part)
                 
                 # Create the timeline entry
                 st.markdown(f"""
@@ -207,4 +209,3 @@ def display_career_timeline():
             """, unsafe_allow_html=True)
         else:
             st.info(f"No career timeline available for {job_title}. Try another career path.")
-
