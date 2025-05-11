@@ -287,6 +287,32 @@ def display_career_path_map():
                         common_skills = common_skills[:3]
                         
                         st.markdown(f"""
-                        <div style="background-color:#1E293B; padding:16px; border-radius:10px; 
-                                    border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+<div style="background-color:#1E293B; padding:16px; border-radius:10px; 
+            border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h4 style="color:white; margin:0; font-size:16px; font-weight:600;">{transition}</h4>
+        <div style="background-color:rgba({overlap_color.replace('#', '')}, 0.1); padding:4px 8px; 
+                    border-radius:4px; border:1px solid {overlap_color};">
+            <span style="color:{overlap_color}; font-size:12px; font-weight:500;">{overlap}% overlap</span>
+        </div>
+    </div>
+    <div>
+        <p style="color:#94A3B8; font-size:14px; margin:0 0 10px 0;">Common skills:</p>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+""", unsafe_allow_html=True)
+
+# Display common skills
+for skill in common_skills:
+    st.markdown(f"""
+    <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
+                border-radius:4px; border:1px solid rgba(59, 130, 246, 0.3);">
+        <span style="color:white; font-size:12px;">{skill}</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("""
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
