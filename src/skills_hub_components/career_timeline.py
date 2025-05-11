@@ -168,7 +168,6 @@ def display_career_timeline():
                                 </div>
                             </div>
                             
-                            <!-- Added a clear heading for the skills section -->
                             <div style="margin-bottom:10px;">
                                 <h4 style="color:#94A3B8; font-size:14px; margin:0 0 12px 0; display:flex; align-items:center;">
                                     <span style="font-size:16px; margin-right:8px;">🔧</span>Key Skills Required:
