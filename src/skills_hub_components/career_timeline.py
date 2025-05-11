@@ -168,11 +168,9 @@ def display_career_timeline():
                                 </div>
                             </div>
                             
-                            <div style="margin-bottom:10px;">
-                                <h4 style="color:#94A3B8; font-size:14px; margin:0 0 12px 0; display:flex; align-items:center;">
-                                    <span style="font-size:16px; margin-right:8px;">🔧</span>Key Skills Required:
-                                </h4>
-                            </div>
+                            <span style="color:#94A3B8; font-size:14px; display:flex; align-items:center; margin-bottom:12px;">
+                                <span style="font-size:16px; margin-right:8px;">🔧</span>Key Skills Required:
+                            </span>
                             
                             <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
                 """, unsafe_allow_html=True)
