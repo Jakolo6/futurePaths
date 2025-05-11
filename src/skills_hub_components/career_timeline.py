@@ -167,12 +167,9 @@ def display_career_timeline():
                                     <span style="color:white; font-size:14px;">{step["salary"]}</span>
                                 </div>
                             </div>
-                            
-                            <span style="color:#94A3B8; font-size:14px; display:flex; align-items:center; margin-bottom:12px;">
-                                <span style="font-size:16px; margin-right:8px;">🔧</span>Key Skills Required:
-                            </span>
-                            
-                            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                            <div>
+                                <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Key Skills:</span>
+                                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
                 """, unsafe_allow_html=True)
                 
                 # Display skills as badges with improved spacing and styling
@@ -186,6 +183,7 @@ def display_career_timeline():
                     """, unsafe_allow_html=True)
                 
                 st.markdown("""
+                                </div>
                             </div>
                         </div>
                     </div>
