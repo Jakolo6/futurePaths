@@ -278,7 +278,7 @@ def display_career_path_map():
                             if skills_to_develop:
                                 st.markdown("""
                                 <div style="background-color:#1E293B; padding:12px; border-radius:8px; 
-                                            border:1px solid rgba(255,255,255,0.05);">
+                                            border:1px solid rgba(255,255,255,0.05); margin-bottom:10px;">
                                     <p style="color:#94A3B8; font-size:14px; margin:0 0 8px 0;">Skills to Develop:</p>
                                 """, unsafe_allow_html=True)
                                 
