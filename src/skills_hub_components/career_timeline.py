@@ -103,8 +103,10 @@ def display_career_timeline():
                 if duration.isdigit():
                     total_years += int(duration)
                 else:
-                    # Handle cases like "3+ years"
-                    total_years += int(duration.replace("+", ""))
+                    # Extract only the numeric part using string split
+                    numeric_part = duration.replace("+", "").split()[0]  # This will get just the "5" from "5 years"
+                    total_years += int(numeric_part)
+
             
             # Display each step in the career path
             for i, step in enumerate(career_path):
