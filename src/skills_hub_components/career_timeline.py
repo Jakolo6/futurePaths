@@ -140,66 +140,82 @@ def display_career_timeline():
                     numeric_part = duration.replace("+", "").split()[0]
                     year_end = year_start + int(numeric_part)
                 
-                # Split the timeline entry rendering into smaller chunks to avoid HTML rendering issues
-                # First part: Timeline marker and container
+                # Create a unique key for each step to avoid rendering issues
+                step_key = f"step_{i}_{job_title.replace(' ', '_')}"
+                
+                # Create the timeline entry - split into smaller parts for better rendering
+                # Part 1: Timeline marker and container start
                 st.markdown(f"""
-                <div style="display:flex; margin-bottom:30px; position:relative;">
+                <div style="display:flex; margin-bottom:30px; position:relative;" id="{step_key}_container">
                     <div style="position:relative; margin-right:20px; display:flex; flex-direction:column; align-items:center;">
                         <div style="width:20px; height:20px; background-color:{marker_color}; border-radius:50%; z-index:2;"></div>
-                        {'' if i == len(career_path) - 1 else '<div style="width:2px; height:100%; background-color:#475569; position:absolute; top:20px; bottom:0;"></div>'}
+                """, unsafe_allow_html=True)
+                
+                # Part 2: Vertical line (separate markdown call)
+                if i < len(career_path) - 1:
+                    st.markdown("""
+                        <div style="width:2px; height:100%; background-color:#475569; position:absolute; top:20px; bottom:0;"></div>
+                    """, unsafe_allow_html=True)
+                
+                # Part 3: Close the marker div and start the content div
+                st.markdown("""
                     </div>
                     <div style="flex:1;">
                 """, unsafe_allow_html=True)
                 
-                # Second part: Card header with role and years
+                # Part 4: Card container
                 st.markdown(f"""
-                <div style="background-color:#1E293B; padding:16px; border-radius:10px; 
-                            border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
-                        <h3 style="color:white; margin:0; font-size:18px; font-weight:600;">{step["role"]}</h3>
-                        <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
-                                    border-radius:4px; border:1px solid #3B82F6;">
-                            <span style="color:#3B82F6; font-size:12px; font-weight:500;">{year_start}-{year_end if "+" not in step["duration"] else str(year_end)+"+"}</span>
-                        </div>
-                    </div>
+                        <div style="background-color:#1E293B; padding:16px; border-radius:10px; 
+                                    border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 """, unsafe_allow_html=True)
                 
-                # Third part: Duration and salary
+                # Part 5: Role and year
                 st.markdown(f"""
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <div style="display:flex; align-items:center;">
-                            <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Duration:</span>
-                            <span style="color:white; font-size:14px;">{step["duration"]}</span>
-                        </div>
-                        <div style="display:flex; align-items:center;">
-                            <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Typical Salary:</span>
-                            <span style="color:white; font-size:14px;">{step["salary"]}</span>
-                        </div>
-                    </div>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                                <h3 style="color:white; margin:0; font-size:18px; font-weight:600;">{step["role"]}</h3>
+                                <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
+                                            border-radius:4px; border:1px solid #3B82F6;">
+                                    <span style="color:#3B82F6; font-size:12px; font-weight:500;">{year_start}-{year_end if "+" not in step["duration"] else str(year_end)+"+"}</span>
+                                </div>
+                            </div>
                 """, unsafe_allow_html=True)
                 
-                # Fourth part: Skills header
+                # Part 6: Duration and salary
+                st.markdown(f"""
+                            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                                <div style="display:flex; align-items:center;">
+                                    <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Duration:</span>
+                                    <span style="color:white; font-size:14px;">{step["duration"]}</span>
+                                </div>
+                                <div style="display:flex; align-items:center;">
+                                    <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Typical Salary:</span>
+                                    <span style="color:white; font-size:14px;">{step["salary"]}</span>
+                                </div>
+                            </div>
+                """, unsafe_allow_html=True)
+                
+                # Part 7: Skills header
                 st.markdown("""
-                    <div>
-                        <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Key Skills:</span>
-                        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                            <div>
+                                <span style="color:#94A3B8; font-size:14px; margin-right:4px;">Key Skills:</span>
+                                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
                 """, unsafe_allow_html=True)
                 
-                # Fifth part: Individual skill badges (rendered one by one)
+                # Part 8: Individual skill badges
                 for skill in step["skills"]:
                     st.markdown(f"""
-                        <div style="background-color:rgba(59, 130, 246, 0.1); padding:8px 12px; 
-                                    border-radius:6px; border:1px solid rgba(59, 130, 246, 0.3);
-                                    margin-bottom:8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <span style="color:white; font-size:13px; font-weight:500;">{skill}</span>
-                        </div>
+                                    <div style="background-color:rgba(59, 130, 246, 0.1); padding:8px 12px; 
+                                                border-radius:6px; border:1px solid rgba(59, 130, 246, 0.3);
+                                                margin-bottom:8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                                        <span style="color:white; font-size:13px; font-weight:500;">{skill}</span>
+                                    </div>
                     """, unsafe_allow_html=True)
                 
-                # Sixth part: Close all divs
+                # Part 9: Close all divs
                 st.markdown("""
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
