@@ -66,7 +66,7 @@ import resume_upload_and_predict_page
 
 # ── Pages dictionary ─────────────────────────────────────────────────────────
 PAGES = {
-    "Career Pivot Suggestions": ("🔄", career_pivot_page),
+    #"Career Pivot Suggestions": ("🔄", career_pivot_page),
     "Resume Analysis & Pathfinding": ("📄", resume_upload_and_predict_page),
     "Internships & Salary Insights": ("💰", internships_salary_page),
     "Skills & Learning Hub": ("🧠", skills_learning_hub),
