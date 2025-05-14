@@ -2,23 +2,48 @@ import streamlit as st
 import random
 import numpy as np
 
-# Required tools/software by role (from your salary page)
+# Updated JOB_TOOLS with proper skill overlaps between related roles
 JOB_TOOLS = {
-    "Data Analyst": ["Excel", "SQL", "Tableau/Power BI", "Python/R"],
-    "Data Scientist": ["Python", "R", "SQL", "TensorFlow/PyTorch", "Jupyter"],
-    "UX Designer": ["Figma", "Sketch", "Adobe XD", "InVision", "Zeplin"],
-    "Marketing Manager": ["Google Analytics", "HubSpot", "SEO tools", "Social media platforms"],
-    "Product Manager": ["Jira", "Confluence", "Figma", "Google Analytics"],
-    "Software Engineer": ["Git", "Docker", "CI/CD tools", "Cloud platforms"],
-    "Frontend Developer": ["HTML/CSS", "JavaScript", "React/Angular/Vue", "Git"],
-    "Backend Developer": ["Node.js/Python/Java", "SQL/NoSQL", "API tools", "Docker"],
-    "Full Stack Developer": ["JavaScript", "HTML/CSS", "Backend languages", "Databases", "Git"],
-    "DevOps Engineer": ["Docker", "Kubernetes", "AWS/Azure/GCP", "CI/CD pipelines", "Terraform"],
-    "Machine Learning Engineer": ["Python", "TensorFlow/PyTorch", "Scikit-learn", "Jupyter", "Git"],
-    "Business Analyst": ["Excel", "SQL", "Tableau/Power BI", "Jira"],
-    "Project Manager": ["MS Project", "Jira", "Asana", "Slack", "Confluence"],
-    "Content Writer": ["CMS platforms", "SEO tools", "Grammarly", "Google Analytics"],
-    "Graphic Designer": ["Adobe Creative Suite", "Figma", "Sketch", "Canva"],
+    # Data & Analytics cluster
+    "Data Analyst": ["SQL", "Excel", "Data visualization", "Statistical analysis", "Data cleaning"],
+    "Data Scientist": ["Python", "SQL", "Statistical analysis", "Machine learning", "Data visualization"],
+    "Data Engineer": ["SQL", "Python", "ETL processes", "Database design", "Data pipelines"],
+    "Business Analyst": ["Excel", "SQL", "Data visualization", "Business requirements", "Process analysis"],
+    "Machine Learning Engineer": ["Python", "Machine learning", "SQL", "Model deployment", "Deep learning"],
+    "Business Intelligence Analyst": ["SQL", "Data visualization", "Excel", "Dashboard creation", "Data modeling"],
+    
+    # Software Development cluster
+    "Software Engineer": ["Programming languages", "Git", "Software design", "Testing", "Algorithms"],
+    "Frontend Developer": ["JavaScript", "HTML/CSS", "Git", "React/Angular/Vue", "UI/UX principles"],
+    "Backend Developer": ["Programming languages", "SQL/NoSQL", "API design", "Git", "Server management"],
+    "Full Stack Developer": ["JavaScript", "HTML/CSS", "Programming languages", "SQL/NoSQL", "Git"],
+    "DevOps Engineer": ["CI/CD pipelines", "Cloud platforms", "Infrastructure as code", "Containerization", "Monitoring"],
+    "Cloud Engineer": ["Cloud platforms", "Infrastructure as code", "Networking", "Security", "Containerization"],
+    "Site Reliability Engineer": ["Monitoring", "Automation", "Infrastructure as code", "Incident response", "Cloud platforms"],
+    "Mobile Developer": ["Mobile frameworks", "Programming languages", "Git", "API integration", "UI design"],
+    
+    # Design cluster
+    "UX Designer": ["User research", "Wireframing", "Prototyping", "Design tools", "Information architecture"],
+    "UI Designer": ["Visual design", "Design tools", "Prototyping", "Typography", "Color theory"],
+    "Graphic Designer": ["Design tools", "Visual composition", "Typography", "Color theory", "Brand identity"],
+    "Product Designer": ["Design tools", "User research", "Prototyping", "Visual design", "User flows"],
+    "Visual Designer": ["Design tools", "Color theory", "Typography", "Visual composition", "Brand identity"],
+    "Interaction Designer": ["Prototyping", "Design tools", "Motion design", "User flows", "Wireframing"],
+    
+    # Product & Project Management cluster
+    "Product Manager": ["Product strategy", "User stories", "Stakeholder management", "Market analysis", "Roadmapping"],
+    "Project Manager": ["Project planning", "Stakeholder management", "Risk management", "Agile methodologies", "Resource allocation"],
+    "Program Manager": ["Portfolio management", "Stakeholder management", "Strategic planning", "Risk management", "Resource allocation"],
+    "Scrum Master": ["Agile methodologies", "Team facilitation", "Sprint planning", "Impediment removal", "Stakeholder management"],
+    "Product Owner": ["User stories", "Product backlog", "Stakeholder management", "Prioritization", "Product strategy"],
+    
+    # Marketing & Content cluster
+    "Marketing Manager": ["Marketing strategy", "Analytics", "Campaign management", "Brand development", "Customer insights"],
+    "Content Writer": ["Content creation", "SEO principles", "Research", "Editing", "Brand voice"],
+    "SEO Specialist": ["SEO principles", "Analytics", "Content optimization", "Keyword research", "Technical SEO"],
+    "Social Media Manager": ["Content creation", "Social media platforms", "Analytics", "Community management", "Campaign planning"],
+    "Content Strategist": ["Content planning", "SEO principles", "Analytics", "Brand voice", "Audience research"],
+    "Digital Marketing Specialist": ["Analytics", "SEO principles", "Campaign management", "Social media platforms", "Email marketing"]
 }
 
 def classify_transition(num_skills_to_develop):
