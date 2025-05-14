@@ -99,43 +99,43 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 🔧 Enhanced salary database with more roles
+# 🔧 Enhanced salary database with more realistic salaries (increased by 10-15k)
 SALARY_BASE_ESTIMATES = {
-    "Data Analyst": 45000,
-    "Data Scientist": 52500,
-    "UX Designer": 43000,
-    "Marketing Manager": 48500,
-    "Product Manager": 60000,
-    "Software Engineer": 55000,
-    "Frontend Developer": 50000,
-    "Backend Developer": 53000,
-    "Full Stack Developer": 57000,
-    "DevOps Engineer": 62000,
-    "Machine Learning Engineer": 65000,
-    "Business Analyst": 47000,
-    "Project Manager": 55000,
-    "Content Writer": 40000,
-    "Graphic Designer": 42000,
+    "Data Analyst": 60000,
+    "Data Scientist": 70000,
+    "UX Designer": 58000,
+    "Marketing Manager": 63000,
+    "Product Manager": 75000,
+    "Software Engineer": 72000,
+    "Frontend Developer": 65000,
+    "Backend Developer": 68000,
+    "Full Stack Developer": 73000,
+    "DevOps Engineer": 78000,
+    "Machine Learning Engineer": 80000,
+    "Business Analyst": 62000,
+    "Project Manager": 70000,
+    "Content Writer": 55000,
+    "Graphic Designer": 57000,
 }
 
-# 🌍 Global location adjustment factors (percentage)
+# 🌍 Global location adjustment factors with more drastic differences
 LOCATION_ADJUSTMENTS = {
-    "New York, USA": 1.0,  # Base reference
-    "San Francisco, USA": 0.90,
-    "London, UK": 0.78,
-    "Zurich, Switzerland": 1.04,
-    "Singapore": 0.79,
-    "Tokyo, Japan": 0.75,
-    "Sydney, Australia": 0.68,
-    "Paris, France": 0.68,
-    "Amsterdam, Netherlands": 0.68,
-    "Dubai, UAE": 0.72,
-    "Hong Kong": 0.74,
-    "Berlin, Germany": 0.65,
-    "Munich, Germany": 0.66,
-    "Toronto, Canada": 0.67,
-    "Seoul, South Korea": 0.63,
-    "Remote": 0.70,
+    "New York, USA": 1.30,  # Increased significantly
+    "San Francisco, USA": 1.35,  # Highest in USA
+    "London, UK": 1.15,
+    "Zurich, Switzerland": 1.40,  # Highest overall
+    "Singapore": 1.10,
+    "Tokyo, Japan": 1.05,
+    "Sydney, Australia": 0.95,
+    "Paris, France": 1.00,
+    "Amsterdam, Netherlands": 1.00,
+    "Dubai, UAE": 1.05,
+    "Hong Kong": 1.08,
+    "Berlin, Germany": 0.90,
+    "Munich, Germany": 0.95,
+    "Toronto, Canada": 0.98,
+    "Seoul, South Korea": 0.90,
+    "Remote": 0.85,
 }
 
 # 🛠️ Required tools/software by role
@@ -189,14 +189,18 @@ def get_adjusted_salary(base_salary, location):
     adjusted_salary = base_salary * adjustment_factor
     return f"€{int(adjusted_salary - 5000)} - €{int(adjusted_salary + 5000)} / year"
 
-# 📊 Create salary growth chart
+# 📊 Create salary growth chart with non-linear progression
 def create_salary_growth_chart(job_title, location):
-    # Mock data for 5-year salary progression
-    base = SALARY_BASE_ESTIMATES.get(job_title, 45000)
+    # Mock data for 5-year salary progression with non-linear growth
+    base = SALARY_BASE_ESTIMATES.get(job_title, 60000)
     adjustment = LOCATION_ADJUSTMENTS.get(location, 1.0)
     
     years = list(range(2025, 2030))
-    salaries = [int(base * adjustment * (1 + 0.05 * i)) for i in range(5)]
+    
+    # Create non-linear growth factors - steeper increases after years 2 and 4
+    growth_factors = [0, 0.07, 0.18, 0.25, 0.38]  # Non-linear growth
+    
+    salaries = [int(base * adjustment * (1 + factor)) for factor in growth_factors]
     
     df = pd.DataFrame({
         'Year': years,
@@ -264,7 +268,7 @@ def run():
 
     if job_title and location:
         # Enhanced salary card with more visual impact
-        base_salary = SALARY_BASE_ESTIMATES.get(job_title, 45000)
+        base_salary = SALARY_BASE_ESTIMATES.get(job_title, 60000)
         adjusted_salary = get_adjusted_salary(base_salary, location)
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
