@@ -118,6 +118,11 @@ def display_skill_gap_analysis():
                 user_values = [user_skills[skill] for skill in categories]
                 required_values = [skill_requirements.get(skill, 8) for skill in categories]
                 
+                # Close the loop by repeating the first point at the end
+                categories = categories + [categories[0]]
+                user_values = user_values + [user_values[0]]
+                required_values = required_values + [required_values[0]]
+                
                 # Create radar chart using Plotly
                 fig = go.Figure()
                 
@@ -166,10 +171,12 @@ def display_skill_gap_analysis():
                 st.plotly_chart(fig, use_container_width=True)
                 
                 # Calculate skill gaps and strengths
+                # Note: Use the original categories without the duplicated point for calculations
+                original_categories = list(user_skills.keys())
                 gaps = []
                 strengths = []
                 
-                for skill in categories:
+                for skill in original_categories:
                     user_value = user_skills[skill]
                     required_value = skill_requirements.get(skill, 8)
                     
@@ -275,4 +282,3 @@ def display_skill_gap_analysis():
                     """, unsafe_allow_html=True)
         else:
             st.info(f"No specific skill requirements available for {job_title}. Try another career path.")
-
