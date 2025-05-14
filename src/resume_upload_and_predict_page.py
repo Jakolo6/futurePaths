@@ -1,9 +1,6 @@
 # resume_upload_and_predict_page.py
 import streamlit as st
 import numpy as np
-# No need to import faiss or SentenceTransformer directly if using functions from career_pivot_page
-# from sentence_transformers import SentenceTransformer
-# import faiss
 
 # Import functions from other files in the src directory
 from utils.resume_parser import parse_resume_data
@@ -32,7 +29,6 @@ def generate_suggestions_from_text(model, index, next_jobs_data, query_text, top
         for i, idx in enumerate(indices[0]):
             if idx < 0 or idx >= len(next_jobs_data):
                 # This case should ideally not happen if index and data are consistent
-                # print(f"Warning: Index {idx} out of bounds for next_jobs_data (size {len(next_jobs_data)})")
                 continue
             
             # In career_pivot_page, 'distances' are used directly as 'confidence'.
@@ -97,21 +93,9 @@ def run(): # Standardized run function for Streamlit pages
     if st.session_state.parsed_resume_data:
         data = st.session_state.parsed_resume_data
         
-        # Add debug section to see what's extracted
-        with st.expander("Debug - View Extracted Data"):
-            st.write("Raw parsed resume data:", data)
-            
-            # Check specific fields we're trying to access
-            st.write("Most Recent Job:", data.get("most_recent_job", "Not found"))
-            if data.get("most_recent_job"):
-                st.write("- Job Title:", data["most_recent_job"].get("title", "Not found"))
-                st.write("- Job Description:", data["most_recent_job"].get("description", "Not found"))
-            
-            st.write("Skills:", data.get("skills", "Not found"))
-        
         st.subheader("📝 Extracted Resume Insights")
 
-        # NEW: Add editable text fields for extracted information
+        # Add editable text fields for extracted information
         # Most recent job title and description
         if data.get("most_recent_job"):
             mrj = data["most_recent_job"]
