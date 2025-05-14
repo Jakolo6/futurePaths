@@ -95,19 +95,6 @@ def display_career_timeline():
             <div style="margin-top:30px;">
             """, unsafe_allow_html=True)
             
-            # Calculate total years
-            total_years = 0
-            for step in career_path:
-                # Extract the first number from the duration string
-                duration = step["duration"].split("-")[0]
-                if duration.isdigit():
-                    total_years += int(duration)
-                else:
-                    # Extract only the numeric part using string split
-                    numeric_part = duration.replace("+", "").split()[0]  # This will get just the "5" from "5 years"
-                    total_years += int(numeric_part)
-
-            
             # Display each step in the career path
             for i, step in enumerate(career_path):
                 # Determine the position marker color
@@ -123,22 +110,40 @@ def display_career_timeline():
                 if i > 0:
                     # Calculate based on previous positions
                     for j in range(i):
-                        prev_duration = career_path[j]["duration"].split("-")[0]
-                        if prev_duration.isdigit():
-                            year_start += int(prev_duration)
+                        prev_duration = career_path[j]["duration"]
+                        if "month" in prev_duration.lower():
+                            # Handle months by converting to fractional years
+                            months = int(prev_duration.split("-")[0])
+                            year_start += months / 12  # Convert months to years
                         else:
-                            # Handle cases like "3+ years"
-                            numeric_part = prev_duration.replace("+", "").split()[0]
-                            year_start += int(numeric_part)
+                            # Handle years as before
+                            duration_value = prev_duration.split("-")[0]
+                            if duration_value.isdigit():
+                                year_start += int(duration_value)
+                            else:
+                                # Handle cases like "3+ years"
+                                numeric_part = duration_value.replace("+", "").split()[0]
+                                year_start += int(numeric_part)
                 
-                # Extract the first number from the duration string
-                duration = step["duration"].split("-")[0]
-                if duration.isdigit():
-                    year_end = year_start + int(duration)
+                # Calculate year_end
+                duration = step["duration"]
+                if "month" in duration.lower():
+                    # Handle months for the current step
+                    months = int(duration.split("-")[0])
+                    year_end = year_start + (months / 12)  # Convert months to years
                 else:
-                    # Handle cases like "3+ years"
-                    numeric_part = duration.replace("+", "").split()[0]
-                    year_end = year_start + int(numeric_part)
+                    # Handle years as before
+                    duration_value = duration.split("-")[0]
+                    if duration_value.isdigit():
+                        year_end = year_start + int(duration_value)
+                    else:
+                        # Handle cases like "3+ years"
+                        numeric_part = duration_value.replace("+", "").split()[0]
+                        year_end = year_start + int(numeric_part)
+                
+                # Format the year display
+                year_start_display = int(year_start)
+                year_end_display = int(year_end) if "+" not in step["duration"] else f"{int(year_end)}+"
                 
                 # Split the timeline entry rendering into smaller chunks to avoid HTML rendering issues
                 # First part: Timeline marker and container
@@ -152,17 +157,31 @@ def display_career_timeline():
                 """, unsafe_allow_html=True)
                 
                 # Second part: Card header with role and years
-                st.markdown(f"""
-                <div style="background-color:#1E293B; padding:16px; border-radius:10px; 
-                            border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
-                        <h3 style="color:white; margin:0; font-size:18px; font-weight:600;">{step["role"]}</h3>
-                        <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
-                                    border-radius:4px; border:1px solid #3B82F6;">
-                            <span style="color:#3B82F6; font-size:12px; font-weight:500;">{year_start}-{year_end if "+" not in step["duration"] else str(year_end)+"+"}</span>
+                # Display year differently for internships (months)
+                if "month" in step["duration"].lower():
+                    st.markdown(f"""
+                    <div style="background-color:#1E293B; padding:16px; border-radius:10px; 
+                                border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                            <h3 style="color:white; margin:0; font-size:18px; font-weight:600;">{step["role"]}</h3>
+                            <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
+                                        border-radius:4px; border:1px solid #3B82F6;">
+                                <span style="color:#3B82F6; font-size:12px; font-weight:500;">{year_start_display} ({step["duration"]})</span>
+                            </div>
                         </div>
-                    </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div style="background-color:#1E293B; padding:16px; border-radius:10px; 
+                                border:1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                            <h3 style="color:white; margin:0; font-size:18px; font-weight:600;">{step["role"]}</h3>
+                            <div style="background-color:rgba(59, 130, 246, 0.1); padding:4px 8px; 
+                                        border-radius:4px; border:1px solid #3B82F6;">
+                                <span style="color:#3B82F6; font-size:12px; font-weight:500;">{year_start_display}-{year_end_display}</span>
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
                 
                 # Third part: Duration and salary
                 st.markdown(f"""
