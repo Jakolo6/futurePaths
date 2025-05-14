@@ -98,21 +98,57 @@ def run(): # Standardized run function for Streamlit pages
         data = st.session_state.parsed_resume_data
         st.subheader("📝 Extracted Resume Insights")
 
-        # Display extracted info (conditionally)
+        # NEW: Add editable text fields for extracted information
+        # Most recent job title and description
         if data.get("most_recent_job"):
             mrj = data["most_recent_job"]
-            st.write(f"**Most Recent Role (extracted):** {mrj.get('title', 'N/A')}")
-            if mrj.get("description"):
-                 with st.expander("View Recent Role Description (extracted)"):
-                    st.markdown(f"_{mrj.get('company_date_info', '')}_")
-                    st.text(mrj['description'][:1000] + ("..." if len(mrj['description']) > 1000 else ""))
+            st.write("**Most Recent Role (extracted):**")
+            edited_job_title = st.text_input(
+                "",
+                value=mrj.get('title', 'N/A'),
+                key="edited_job_title"
+            )
+            
+            st.write("**Role Description (you can edit):**")
+            edited_job_description = st.text_area(
+                "",
+                value=mrj.get('description', '')[:1000] + ("..." if len(mrj.get('description', '')) > 1000 else ""),
+                height=150,
+                key="edited_job_description"
+            )
         else:
-            st.write("Could not identify a most recent job clearly from the resume.")
+            st.write("**Most Recent Role (enter manually):**")
+            edited_job_title = st.text_input(
+                "",
+                placeholder="Enter your most recent job title",
+                key="manual_job_title"
+            )
+            
+            st.write("**Role Description (enter manually):**")
+            edited_job_description = st.text_area(
+                "",
+                placeholder="Describe your responsibilities and experience",
+                height=150,
+                key="manual_job_description"
+            )
 
+        # Skills section with editable field
         if data.get("skills"):
-            st.write(f"**Extracted Skills:** {', '.join(data['skills'][:20])}" + ("..." if len(data['skills']) > 20 else ""))
+            st.write("**Extracted Skills (you can edit):**")
+            edited_skills = st.text_area(
+                "",
+                value=", ".join(data['skills'][:20]) + ("..." if len(data['skills']) > 20 else ""),
+                height=100,
+                key="edited_skills"
+            )
         else:
-            st.write("No distinct skills section found or skills could not be automatically extracted.")
+            st.write("**Skills (enter manually):**")
+            edited_skills = st.text_area(
+                "",
+                placeholder="Enter your key skills (comma separated)",
+                height=100,
+                key="edited_skills_manual"
+            )
         
         st.markdown("---")
         
@@ -122,30 +158,26 @@ def run(): # Standardized run function for Streamlit pages
             key="suggestion_type_radio"
         )
 
-        query_text_conventional = ""
-        if data.get("most_recent_job"):
-            mrj = data["most_recent_job"]
-            query_text_conventional = f"Current role: {mrj.get('title', 'Experienced Professional')}. "
-            desc_snippet = ""
-            if mrj.get("description"):
-                desc_snippet = (mrj['description'][:300] + "...") if len(mrj['description']) > 300 else mrj['description']
-            if desc_snippet:
-                 query_text_conventional += f"Responsibilities and experience include: {desc_snippet}. "
-        if data.get("skills"):
-            query_text_conventional += f"Key skills include: {', '.join(data['skills'][:15])}."
-        else: # If no specific job/skills, use summary or fallback
-            summary_text = data.get("summary", "Professional with diverse experience.")
-            query_text_conventional = f"Professional profile summary: {summary_text[:500]}. "
-
-
         if suggestion_type == "📈 Conventional Career Path":
             st.subheader("📈 Conventional Career Path Suggestions")
-            if not query_text_conventional.strip() or query_text_conventional.startswith("Professional profile summary: Professional with diverse experience.") : # check for weak query
-                st.warning("Limited information extracted (e.g. recent job title, specific skills). Suggestions might be general. Try adding more details if possible or ensure your resume is clearly formatted.")
+            
+            # Check if we have enough information
+            if not edited_job_title.strip() and not edited_skills.strip():
+                st.warning("Limited information provided. Please enter your job title or skills above for better suggestions.")
             
             if st.button("Suggest Conventional Paths", key="conv_button"):
+                # Use edited information to construct query
+                query_text_conventional = ""
+                if edited_job_title.strip():
+                    query_text_conventional = f"Current role: {edited_job_title}. "
+                if edited_job_description.strip():
+                    desc_snippet = edited_job_description[:300] + "..." if len(edited_job_description) > 300 else edited_job_description
+                    query_text_conventional += f"Responsibilities and experience include: {desc_snippet}. "
+                if edited_skills.strip():
+                    query_text_conventional += f"Key skills include: {edited_skills}."
+                
                 if not query_text_conventional.strip():
-                    st.error("Cannot generate suggestions without some information from the resume.")
+                    st.error("Cannot generate suggestions without some information. Please provide job title, description, or skills.")
                 else:
                     with st.spinner("Finding conventional next steps..."):
                         recommendations = generate_suggestions_from_text(
@@ -158,41 +190,36 @@ def run(): # Standardized run function for Streamlit pages
                                     st.markdown(f"**Description Snippet:**\n{rec['description'][:300]}...")
                                     st.markdown(f"**🔗 Learn More:** [Search for {rec['title']}](https://www.google.com/search?q={rec['title'].replace(' ', '+')})")
                         else:
-                            st.info("No specific conventional path suggestions found based on the extracted information. The model may not have direct paths from roles very similar to yours, or the extracted info was too generic.")
+                            st.info("No specific conventional path suggestions found based on the provided information. Try adjusting your job details or skills.")
         
         elif suggestion_type == "↔️ Career Pivot":
             st.subheader("↔️ Career Pivot Suggestions")
             aspirations = st.text_area(
                 "Optional: Describe your professional aspirations or interests for a pivot (e.g., 'I want to work in data science', 'Interested in sustainability and tech', 'Enjoy creative problem solving and user-centered design')",
                 height=100,
-                key="aspirations_input_resume" # Unique key
+                key="aspirations_input_resume"
             )
             
-            if st.button("Suggest Career Pivots", key="pivot_button_resume"): # Unique key
+            if st.button("Suggest Career Pivots", key="pivot_button_resume"):
+                # Use edited information to construct query
                 query_text_pivot = ""
-                # Prioritize skills for pivot, then job description, then summary
-                if data.get("skills"): 
-                    query_text_pivot += f"Seeking a new role leveraging skills such as: {', '.join(data['skills'][:20])}. "
-                elif data.get("most_recent_job") and data["most_recent_job"].get("description"):
-                    mrj_desc = data["most_recent_job"]["description"]
-                    desc_snippet = (mrj_desc[:300] + "...") if len(mrj_desc) > 300 else mrj_desc
+                if edited_skills.strip():
+                    query_text_pivot += f"Seeking a new role leveraging skills such as: {edited_skills}. "
+                elif edited_job_description.strip():
+                    desc_snippet = edited_job_description[:300] + "..." if len(edited_job_description) > 300 else edited_job_description
                     query_text_pivot += f"Experienced in tasks such as: {desc_snippet}. "
-                elif data.get("summary"):
-                     query_text_pivot += f"Professional summary includes: {data['summary'][:300]}. "
-
-
+                
                 if aspirations.strip():
                     query_text_pivot += f"Future career aspirations and interests include: {aspirations.strip()}."
                 else: 
                     query_text_pivot += "Open to exploring challenging new career directions and pivot opportunities that build upon existing experience."
-
-                if not query_text_pivot.strip() or \
-                   (not data.get("skills") and not data.get("most_recent_job") and not data.get("summary") and not aspirations.strip()):
-                     st.warning("Not enough information (skills, past experience, or aspirations) to suggest pivots effectively. Please ensure resume has extractable info or add aspirations.")
+                
+                if not query_text_pivot.strip() or (not edited_skills.strip() and not edited_job_description.strip() and not aspirations.strip()):
+                    st.warning("Not enough information provided. Please enter your skills, job description, or aspirations for better pivot suggestions.")
                 else:
                     with st.spinner("Exploring career pivot options..."):
                         recommendations = generate_suggestions_from_text(
-                            model, faiss_index, next_jobs_data, query_text_pivot, top_n=3 # Pivots often want a few strong ideas
+                            model, faiss_index, next_jobs_data, query_text_pivot, top_n=3
                         )
                         if recommendations:
                             st.success(f"Here are your Top {len(recommendations)} Pivot Suggestions:")
@@ -202,7 +229,7 @@ def run(): # Standardized run function for Streamlit pages
                                     st.markdown(f"**Why it might be a good pivot:** This role may align with your stated interests or offer a new application for your existing skills and experience.")
                                     st.markdown(f"**🔗 Learn More:** [Search for {rec['title']}](https://www.google.com/search?q={rec['title'].replace(' ', '+')})")
                         else:
-                            st.info("No career pivot suggestions found. Try refining your aspirations or ensure your resume has clear, extractable information about your skills and experience.")
+                            st.info("No career pivot suggestions found. Try refining your skills, experience description, or aspirations.")
     else:
         if uploaded_file is None:
             st.info("👋 Welcome! Please upload your resume (PDF) to get started.")
