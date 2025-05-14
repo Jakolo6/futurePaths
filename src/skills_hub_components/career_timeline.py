@@ -105,39 +105,50 @@ def display_career_timeline():
                 else:
                     marker_color = "#8B5CF6"  # Purple for intermediate positions
                 
-                # Calculate the year range for this position
-                year_start = 2025
-                if i > 0:
-                    # Calculate based on previous positions
-                    for j in range(i):
-                        prev_duration = career_path[j]["duration"]
-                        if "month" in prev_duration.lower():
-                            # Handle months by converting to fractional years
-                            months = int(prev_duration.split("-")[0])
-                            year_start += months / 12  # Convert months to years
+                # Simplified year calculation
+                if i == 0:
+                    # First position always starts at 2025
+                    year_start = 2025
+                    
+                    # For internships, just show 2025
+                    if "month" in step["duration"].lower():
+                        year_end = 2025
+                    else:
+                        # For non-internship first positions
+                        duration_value = step["duration"].split("-")[0]
+                        if duration_value.isdigit():
+                            year_end = year_start + int(duration_value)
                         else:
-                            # Handle years as before
-                            duration_value = prev_duration.split("-")[0]
-                            if duration_value.isdigit():
-                                year_start += int(duration_value)
-                            else:
-                                # Handle cases like "3+ years"
-                                numeric_part = duration_value.replace("+", "").split()[0]
-                                year_start += int(numeric_part)
-                
-                # Calculate year_end
-                duration = step["duration"]
-                if "month" in duration.lower():
-                    # Handle months for the current step
-                    months = int(duration.split("-")[0])
-                    year_end = year_start + (months / 12)  # Convert months to years
+                            numeric_part = duration_value.replace("+", "").split()[0]
+                            year_end = year_start + int(numeric_part)
                 else:
-                    # Handle years as before
-                    duration_value = duration.split("-")[0]
+                    # For subsequent positions, calculate based on position in sequence
+                    year_start = 2025
+                    
+                    # Skip adding time for internship
+                    if "month" not in career_path[0]["duration"].lower():
+                        # Add years for first position if it's not an internship
+                        first_duration = career_path[0]["duration"].split("-")[0]
+                        if first_duration.isdigit():
+                            year_start += int(first_duration)
+                        else:
+                            numeric_part = first_duration.replace("+", "").split()[0]
+                            year_start += int(numeric_part)
+                    
+                    # Add duration for positions between first and current
+                    for j in range(1, i):
+                        duration_str = career_path[j]["duration"].split("-")[0]
+                        if duration_str.isdigit():
+                            year_start += int(duration_str)
+                        else:
+                            numeric_part = duration_str.replace("+", "").split()[0]
+                            year_start += int(numeric_part)
+                    
+                    # Calculate end year for current position
+                    duration_value = step["duration"].split("-")[0]
                     if duration_value.isdigit():
                         year_end = year_start + int(duration_value)
                     else:
-                        # Handle cases like "3+ years"
                         numeric_part = duration_value.replace("+", "").split()[0]
                         year_end = year_start + int(numeric_part)
                 
