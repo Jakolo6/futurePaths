@@ -96,6 +96,19 @@ def run(): # Standardized run function for Streamlit pages
     
     if st.session_state.parsed_resume_data:
         data = st.session_state.parsed_resume_data
+        
+        # Add debug section to see what's extracted
+        with st.expander("Debug - View Extracted Data"):
+            st.write("Raw parsed resume data:", data)
+            
+            # Check specific fields we're trying to access
+            st.write("Most Recent Job:", data.get("most_recent_job", "Not found"))
+            if data.get("most_recent_job"):
+                st.write("- Job Title:", data["most_recent_job"].get("title", "Not found"))
+                st.write("- Job Description:", data["most_recent_job"].get("description", "Not found"))
+            
+            st.write("Skills:", data.get("skills", "Not found"))
+        
         st.subheader("📝 Extracted Resume Insights")
 
         # NEW: Add editable text fields for extracted information
