@@ -99,30 +99,23 @@ def extract_job_entries(experience_text):
         return []
 
     entries = []
-    # Try to split by patterns that might indicate start of a new job entry.
-    # e.g., A line that looks like a job title, followed by a line with company/dates.
-    # This regex looks for a line that is likely a job title (1-6 words, initial caps, not all caps unless short)
-    # and is NOT preceded by a bullet point (to avoid list items within a description).
-    # It captures up to the next job title or end of text.
-    # This is a simplified block splitter.
-    job_block_pattern = re.compile(
-        r"(?<!^\s*[-*•])"  # Negative lookbehind for bullet points
-        r"^\s*([A-Z][a-zA-Z\s,-/\(\)&']{5,60}[a-zA-Z\)]|[A-Z][A-Z\s'&]{3,60}[A-Z])\s*$" # Potential title line
-        r"(?:[\r\n]+^\s*(?:[A-Z][a-zA-Z\s,.'&]+(?:LLC|Inc|Ltd|Corp)?\s*\|?\s*(?:[A-Za-z]+\s+\d{4}|\d{1,2}/\d{4})\s*[\r\n]+)?" # Optional company/date line
-        , re.MULTILINE
-    )
     
-    # Find all potential job title lines
-    title_lines_matches = []
-    for match in re.finditer(r"^\s*([A-Z][a-zA-Z\s,-/\(\)&']{5,60}[a-zA-Z\)]|[A-Z][A-Z\s'&]{3,60}[A-Z])\s*$", experience_text, re.MULTILINE):
+    # Simplified regex to find job titles: lines starting with capital letter and containing words
+    job_title_pattern = re.compile(r"^\s*([A-Z][a-zA-Z\s,\-\(\)&']{5,60}[a-zA-Z\)])\s*$", re.MULTILINE)
+
+    title_lines_matches = list(job_title_pattern.finditer(experience_text))
+    
+    # Filter out lines that are likely section subheaders or too generic
+    filtered_matches = []
+    for match in title_lines_matches:
         line_text = match.group(0).strip()
-        # Filter out lines that are likely section subheaders or too generic
         if line_text.lower() not in ["responsibilities", "achievements", "key projects"] and \
            not re.search(r"(?i)(inc\.?|llc|ltd\.?|gmbh|corp\.?|solution)", line_text) and \
            len(line_text.split(',')) < 3 and \
            not (len(line_text.split()) > 6 and not any(kw in line_text.lower() for kw in ["manager", "engineer", "developer", "analyst", "specialist"])):
-            title_lines_matches.append(match)
-
+            filtered_matches.append(match)
+    
+    title_lines_matches = filtered_matches
 
     for i, title_match in enumerate(title_lines_matches):
         title = title_match.group(0).strip()
