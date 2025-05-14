@@ -37,7 +37,9 @@ def extract_sections(text):
     ]
     pattern_parts = []
     for keyword in section_keywords:
-        pattern_parts.append(f"^(?:\\s*[-*•]?\\s*)({keyword.replace(' ', r'\\s+')})(?:\\s*:|\\s*\\n)")
+        # Fix: Escape the backslash by using double backslashes
+        escaped_keyword = keyword.replace(' ', '\\s+')
+        pattern_parts.append(f"^(?:\\s*[-*•]?\\s*)({escaped_keyword})(?:\\s*:|\\s*\\n)")
     regex_pattern = re.compile("|".join(pattern_parts), re.IGNORECASE | re.MULTILINE)
 
     last_match_end = 0
@@ -66,7 +68,7 @@ def extract_sections(text):
         if current_section_title_key and last_match_end < match.start():
             content = text[last_match_end:match.start()].strip()
             if current_section_title_key in sections:
-                 sections[current_section_title_key] += "\n" + content
+                sections[current_section_title_key] += "\n" + content
             else:
                 sections[current_section_title_key] = content
         
