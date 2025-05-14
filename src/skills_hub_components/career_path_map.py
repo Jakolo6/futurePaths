@@ -3,6 +3,7 @@ import random
 import numpy as np
 
 # Updated JOB_TOOLS with proper skill overlaps between related roles
+# Added missing roles: AI Engineer, AI Researcher, System Administrator, Research Scientist, Web Designer
 JOB_TOOLS = {
     # Data & Analytics cluster
     "Data Analyst": ["SQL", "Excel", "Data visualization", "Statistical analysis", "Data cleaning"],
@@ -11,6 +12,9 @@ JOB_TOOLS = {
     "Business Analyst": ["Excel", "SQL", "Data visualization", "Business requirements", "Process analysis"],
     "Machine Learning Engineer": ["Python", "Machine learning", "SQL", "Model deployment", "Deep learning"],
     "Business Intelligence Analyst": ["SQL", "Data visualization", "Excel", "Dashboard creation", "Data modeling"],
+    "AI Engineer": ["Python", "Machine learning", "Deep learning", "Algorithm development", "Neural networks"],
+    "AI Researcher": ["Python", "Deep learning", "Research methods", "Scientific writing", "Neural networks"],
+    "Research Scientist": ["Python", "Research methods", "Statistical analysis", "Scientific writing", "Experimental design"],
     
     # Software Development cluster
     "Software Engineer": ["Programming languages", "Git", "Software design", "Testing", "Algorithms"],
@@ -21,6 +25,7 @@ JOB_TOOLS = {
     "Cloud Engineer": ["Cloud platforms", "Infrastructure as code", "Networking", "Security", "Containerization"],
     "Site Reliability Engineer": ["Monitoring", "Automation", "Infrastructure as code", "Incident response", "Cloud platforms"],
     "Mobile Developer": ["Mobile frameworks", "Programming languages", "Git", "API integration", "UI design"],
+    "System Administrator": ["Server management", "Networking", "Security", "Automation", "Troubleshooting"],
     
     # Design cluster
     "UX Designer": ["User research", "Wireframing", "Prototyping", "Design tools", "Information architecture"],
@@ -29,6 +34,7 @@ JOB_TOOLS = {
     "Product Designer": ["Design tools", "User research", "Prototyping", "Visual design", "User flows"],
     "Visual Designer": ["Design tools", "Color theory", "Typography", "Visual composition", "Brand identity"],
     "Interaction Designer": ["Prototyping", "Design tools", "Motion design", "User flows", "Wireframing"],
+    "Web Designer": ["HTML/CSS", "Design tools", "Responsive design", "Typography", "UI principles"],
     
     # Product & Project Management cluster
     "Product Manager": ["Product strategy", "User stories", "Stakeholder management", "Market analysis", "Roadmapping"],
@@ -79,7 +85,10 @@ def display_career_path_map():
             "Business Analyst", 
             "Data Engineer", 
             "Machine Learning Engineer",
-            "Business Intelligence Analyst"
+            "Business Intelligence Analyst",
+            "AI Engineer",
+            "AI Researcher",
+            "Research Scientist"
         ],
         "Software Development": [
             "Software Engineer", 
@@ -87,7 +96,10 @@ def display_career_path_map():
             "Backend Developer", 
             "Full Stack Developer", 
             "DevOps Engineer",
-            "Mobile Developer"
+            "Mobile Developer",
+            "System Administrator",
+            "Cloud Engineer",
+            "Site Reliability Engineer"
         ],
         "Design": [
             "UX Designer", 
@@ -95,7 +107,8 @@ def display_career_path_map():
             "Graphic Designer", 
             "Product Designer",
             "Visual Designer",
-            "Interaction Designer"
+            "Interaction Designer",
+            "Web Designer"
         ],
         "Product & Project Management": [
             "Product Manager", 
