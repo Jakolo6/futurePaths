@@ -46,10 +46,11 @@ JOB_TOOLS = {
     "Digital Marketing Specialist": ["Analytics", "SEO principles", "Campaign management", "Social media platforms", "Email marketing"]
 }
 
+# Updated classification function: 0-1 skills = easy, 2 skills = moderate, 3+ skills = challenging
 def classify_transition(num_skills_to_develop):
-    if num_skills_to_develop == 0:
+    if num_skills_to_develop <= 1:
         return "Easy Transition", "#22C55E"  # Green
-    elif num_skills_to_develop == 1:
+    elif num_skills_to_develop == 2:
         return "Moderate Transition", "#F59E0B"  # Orange
     else:
         return "Challenging Transition", "#EF4444"  # Red
